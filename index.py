@@ -43,14 +43,6 @@ def upload_to_s3(directory, zip_name, bucket_name, object_key):
     s3 = boto3.client('s3')
     s3.upload_file(zip_path+".zip", bucket_name, object_key, ExtraArgs={'ACL': 'public-read'})
     
-def list_objects(bucket_name, prefix):
-    s3 = boto3.client('s3')
-    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
-    if 'Contents' in response:
-        return response["Contents"]
-    else:
-        return []
-        
 def handler(event, context):
     print("event: ", event)
     response = {}
@@ -61,10 +53,7 @@ def handler(event, context):
         if key == "getDirectoryTree":
             response = list_files_and_folders(f'{ROOT_MOUNT_DIR}{event[key]}')
         if key == "createDownloadable":
-            response = upload_to_s3(event[key]["directory"],event[key]["zip_name"] , event[key]["bucket_name"] ,event[key]["object_key"]  )    
-        if key == "listObjects":
-            response= list_objects(event[key]["bucket_name"], event[key]["prefix"])
-            response = json.dumps(response, default=str)
+            response = upload_to_s3(event[key]["directory"], event[key]["zip_name"], event[key]["bucket_name"], event[key]["object_key"])    
 
     return response
 
