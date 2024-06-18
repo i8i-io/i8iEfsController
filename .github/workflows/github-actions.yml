@@ -16,9 +16,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Upload to s3
         run: |
-          zip -r ./i8iops.zip ./index.py
-          aws s3 cp ./i8iops.zip s3://i8i-content/code/i8iops.zip --acl public-read
+          zip -r ./i8iEfsController.zip ./index.py
+          aws s3 cp ./i8iEfsController.zip s3://i8i-content/code/i8iEfsController.zip --acl public-read
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "us-east-1"
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
